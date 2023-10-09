@@ -27,9 +27,9 @@ const GridComponent = () => {
                 quoteWidget.author != "" ? `&author=${quoteWidget.author}` : ""
             }${quoteWidget.genre != "" ? `&genre=${quoteWidget.genre}` : ""}`,
         });
-
+        console.log(quoteResponse);
         if (quoteResponse.status == 200) {
-            setQuoteWidget({ ...quoteWidget, quote: quoteResponse.data.data });
+            setQuoteWidget({ ...quoteWidget, quote: quoteResponse.data.data[0] });
         } else {
             toast.error("Quote Widget Error", { duration: 4000 });
         }
@@ -69,8 +69,8 @@ const GridComponent = () => {
                 <div>
                     <Toaster />
                 </div>
-                <div className="p-5 gap-1 bg-white font-figtree" key="a">
-                    {quoteWidget.quote.quoteText != null ? (
+                <div className="p-5 gap-1 bg-white font-figtree cursor-default h-fit" key="a">
+                    {quoteWidget?.quote?.quoteText != null ? (
                         <div>
                             <div className="flex flex-wrap justify-between content-center">
                                 <div className="text-md grid place-content-center">
