@@ -10,8 +10,12 @@ import Button from "../Button";
 import { BiRefresh } from "react-icons/bi";
 import axios from "axios";
 import LoadingIcons from "react-loading-icons";
+import { SketchPicker } from "react-color";
+import ModalComponent from "../Modal";
+import { AiOutlineBgColors } from "react-icons/ai";
 
 const GridComponent = () => {
+    const [colorModal, setColorModal] = useState(false);
 
     const [quoteWidget, setQuoteWidget] = useState({
         author: "",
@@ -19,6 +23,7 @@ const GridComponent = () => {
         authors: [],
         genres: [],
         quote: {},
+        color: "#ffffff",
     });
 
     const getCustomQuote = async () => {
@@ -29,7 +34,10 @@ const GridComponent = () => {
         });
         console.log(quoteResponse);
         if (quoteResponse.status == 200) {
-            setQuoteWidget({ ...quoteWidget, quote: quoteResponse.data.data[0] });
+            setQuoteWidget({
+                ...quoteWidget,
+                quote: quoteResponse.data.data[0],
+            });
         } else {
             toast.error("Quote Widget Error", { duration: 4000 });
         }
@@ -57,26 +65,60 @@ const GridComponent = () => {
         populateQuoteWidget();
     }, []);
 
-    const layout = [
-        { i: "a", x: 5, y: 0, w: 3, h: 2, static: false },
-    ];
+    const layout = [{ i: "a", x: 5, y: 0, w: 3, h: 2, static: false }];
 
     const ResponsiveGridLayout = WidthProvider(Responsive);
 
     return (
         <div>
+            <div>
+                <ModalComponent
+                    showModal={colorModal}
+                    onRequestClose={() => setColorModal(false)}
+                >
+                    <div className="flex flex-col flex-wrap justify-center content-center gap-3">
+                        <div className="text-xl">Choose a background color</div>
+                        <div className="grid place-content-center w-full">
+                            <SketchPicker
+                                color={quoteWidget.color}
+                                onChangeComplete={(c) =>
+                                    setQuoteWidget({
+                                        ...quoteWidget,
+                                        color: c.hex,
+                                    })
+                                }
+                            />
+                        </div>
+                        <Button
+                            label={"Save"}
+                            color={"text-neutral-50"}
+                            onClick={() => setColorModal(false)}
+                        />
+                    </div>
+                </ModalComponent>
+            </div>
+            <div>
+                <Toaster />
+            </div>
             <ResponsiveGridLayout className="layout" layouts={{ lg: layout }}>
-                <div>
-                    <Toaster />
-                </div>
-                <div className="p-5 gap-1 bg-white font-figtree cursor-default h-fit" key="a">
+                <div
+                    className={`p-5 gap-1 font-figtree cursor-default h-fit`}
+                    style={{ backgroundColor: quoteWidget.color }}
+                    key="a"
+                >
                     {quoteWidget?.quote?.quoteText != null ? (
                         <div>
-                            <div className="flex flex-wrap justify-between content-center">
+                            <div className="flex flex-wrap justify-between content-center pb-2">
                                 <div className="text-md grid place-content-center">
                                     Quote of the day
                                 </div>
-                                <div className="text-neutral-50 h-2 grid place-content-center">
+                                <div className="flex flex-wrap content-center gap-3 text-neutral-50 h-full ">
+                                    <div
+                                        className="text-primary-500 hover:cursor-pointer hover:text-primary-700"
+                                        onClick={() => setColorModal(true)}
+                                    >
+                                        <AiOutlineBgColors />
+                                    </div>
                                     <Button
                                         label={<BiRefresh />}
                                         onClick={() => getCustomQuote()}
