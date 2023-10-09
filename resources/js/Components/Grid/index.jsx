@@ -24,26 +24,39 @@ const GridComponent = () => {
         genres: [],
         quote: {},
         color: "#ffffff",
+        loading: false,
     });
 
     const getCustomQuote = async () => {
+        setQuoteWidget({
+            ...quoteWidget,
+            loading: true,
+        });
         const quoteResponse = await sendRequest({
             route: `https://quote-garden.onrender.com/api/v3/quotes?limit=1${
                 quoteWidget.author != "" ? `&author=${quoteWidget.author}` : ""
             }${quoteWidget.genre != "" ? `&genre=${quoteWidget.genre}` : ""}`,
         });
-        console.log(quoteResponse);
         if (quoteResponse.status == 200) {
             setQuoteWidget({
                 ...quoteWidget,
                 quote: quoteResponse.data.data[0],
             });
+            toast.success("Quote Generated Successfully!");
         } else {
+            setQuoteWidget({
+                ...quoteWidget,
+                loading: false,
+            });
             toast.error("Quote Widget Error", { duration: 4000 });
         }
     };
 
     const populateQuoteWidget = async () => {
+        setQuoteWidget({
+            ...quoteWidget,
+            loading: true,
+        });
         const urls = [
             `https://quote-garden.onrender.com/api/v3/quotes?limit=1`,
             `https://quote-garden.onrender.com/api/v3/authors`,
@@ -57,7 +70,6 @@ const GridComponent = () => {
                 authors: response[1].data.data,
                 genres: response[2].data.data,
             });
-            console.log(quoteWidget);
         });
     };
 
@@ -65,7 +77,7 @@ const GridComponent = () => {
         populateQuoteWidget();
     }, []);
 
-    const layout = [{ i: "a", x: 5, y: 0, w: 3, h: 2, static: false }];
+    const layout = [{ i: "a", x: 0, y: 0, w: 3, h: 2, static: false }];
 
     const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -107,49 +119,58 @@ const GridComponent = () => {
                     key="a"
                 >
                     {quoteWidget?.quote?.quoteText != null ? (
-                        <div>
-                            <div className="flex flex-wrap justify-between content-center pb-2">
-                                <div className="text-md grid place-content-center">
-                                    Quote of the day
-                                </div>
-                                <div className="flex flex-wrap content-center gap-3 text-neutral-50 h-full ">
-                                    <div
-                                        className="text-primary-500 hover:cursor-pointer hover:text-primary-700"
-                                        onClick={() => setColorModal(true)}
-                                    >
-                                        <AiOutlineBgColors />
+                        !quoteWidget.loading ? (
+                            <div>
+                                <div className="flex flex-wrap justify-between content-center pb-2">
+                                    <div className="text-md font-bold text-primary-900 grid place-content-center">
+                                        Quote of the day
                                     </div>
-                                    <Button
-                                        label={<BiRefresh />}
-                                        onClick={() => getCustomQuote()}
-                                    />
+                                    <div className="flex flex-wrap content-center gap-3 text-neutral-50 h-full ">
+                                        <div
+                                            className="text-primary-500 hover:cursor-pointer hover:text-primary-700"
+                                            onClick={() => setColorModal(true)}
+                                        >
+                                            <AiOutlineBgColors />
+                                        </div>
+                                        <Button
+                                            label={<BiRefresh />}
+                                            onClick={() => getCustomQuote()}
+                                        />
+                                    </div>
+                                </div>
+                                <Select
+                                    label={"Author"}
+                                    value={quoteWidget.author}
+                                    options={quoteWidget.authors}
+                                    changeHandler={(s) =>
+                                        setQuoteWidget({
+                                            ...quoteWidget,
+                                            author: s,
+                                        })
+                                    }
+                                />
+                                <Select
+                                    label={"Genre"}
+                                    value={quoteWidget.genre}
+                                    options={quoteWidget.genres}
+                                    changeHandler={(s) =>
+                                        setQuoteWidget({
+                                            ...quoteWidget,
+                                            genre: s,
+                                        })
+                                    }
+                                />
+                                <div className="pt-3">
+                                    <QuotesList quotes={[quoteWidget.quote]} />
                                 </div>
                             </div>
-                            <Select
-                                label={"Author"}
-                                value={quoteWidget.author}
-                                options={quoteWidget.authors}
-                                changeHandler={(s) =>
-                                    setQuoteWidget({
-                                        ...quoteWidget,
-                                        author: s,
-                                    })
-                                }
-                            />
-                            <Select
-                                label={"Genre"}
-                                value={quoteWidget.genre}
-                                options={quoteWidget.genres}
-                                changeHandler={(s) =>
-                                    setQuoteWidget({ ...quoteWidget, genre: s })
-                                }
-                            />
-                            <div className="pt-3">
-                                <QuotesList quotes={[quoteWidget.quote]} />
-                            </div>
-                        </div>
-                    ) : (
+                        ) : (
+                            <LoadingIcons.ThreeDots fill="#38aff9" speed={2} />
+                        )
+                    ) : quoteWidget.loading ? (
                         <LoadingIcons.ThreeDots fill="#38aff9" speed={2} />
+                    ) : (
+                        ""
                     )}
                 </div>
             </ResponsiveGridLayout>
