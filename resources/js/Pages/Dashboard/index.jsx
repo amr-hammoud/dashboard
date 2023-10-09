@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import logo from "../../../../public/icons/logo_white.svg";
-import { AiOutlinePlus } from 'react-icons/ai'
+import { AiOutlinePlus } from "react-icons/ai";
+import GridComponent from "../../Components/Grid";
 
 const DashboardPage = () => {
 
@@ -22,11 +23,11 @@ const DashboardPage = () => {
                 </div>
             </header>
 
-            <main className="h-full w-full"></main>
+            <main className="h-full w-full p-3">
+                <GridComponent />
+            </main>
         </div>
     );
 };
 
 export default DashboardPage;
-
-

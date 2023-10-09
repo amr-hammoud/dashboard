@@ -10,3 +10,10 @@
     font-family: "Coolvetica";
     src: url("../../public/fonts/coolvetica.otf");
 }
+
+.react-grid-item {
+    border-radius: 5px;
+    display: grid;
+    place-content: center;
+    box-shadow: 2px 2px 5px #0000005d;
+}
