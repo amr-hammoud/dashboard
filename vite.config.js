@@ -12,4 +12,7 @@ export default defineConfig({
         WindiCSS(),
         react(),
     ],
+    optimizeDeps: {
+        include: ["chart.js"],
+    },
 });
