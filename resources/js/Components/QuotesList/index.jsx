@@ -1,7 +1,6 @@
 import React from "react";
 
 const QuotesList = ({ quotes }) => {
-    console.log("QTS: ", quotes);
     if (quotes.length > 0) {
         return (
             <div className="flex flex-col justify-start gap-3">

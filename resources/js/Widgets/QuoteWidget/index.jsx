@@ -100,9 +100,6 @@ const QuoteWidget = () => {
                     </div>
                 </ModalComponent>
             </div>
-            <div>
-                <Toaster />
-            </div>
             <div
                 className={`p-5 gap-1 font-figtree cursor-default h-fit`}
                 style={{ backgroundColor: quoteWidget.color }}
