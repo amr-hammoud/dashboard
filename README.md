@@ -22,11 +22,11 @@
 
 <!-- project philosophy -->
 
-- <a name="project-philosophy"></a>
-  
-  <img src="./readme/title3.svg" />
+<a name="project-philosophy"></a>
+<img src="./readme/title3.svg" />
 
 > A dashboard for the user to track custom data in a user-friendly experience.
+
 
 <br>
 <br>
