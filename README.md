@@ -57,7 +57,7 @@ Dashboard.io is built using the following technologies:
 - Laravel: a PHP framework for building web apps
 - Axios: Enables network requests to the backend.
 - Chart.js: Building interactive charts.
-- tailwindcss: a css framework
+- Tailwindcss: a css framework
 
 <br>
 <br>
@@ -125,5 +125,5 @@ Dashboard.io is built using the following technologies:
    Open a new tab in your web browser and access this url
    
    ```sh
-   [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
+   http://127.0.0.1:8000/
    ```
