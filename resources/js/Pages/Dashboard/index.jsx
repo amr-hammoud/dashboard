@@ -17,9 +17,6 @@ const DashboardPage = () => {
                             Dashboard.io
                         </div>
                     </div>
-                    <div className="grid place-content-center text-2xl text-white pr-10 hover:text-neutral-200 hover:cursor-pointer">
-                        <AiOutlinePlus />
-                    </div>
                 </div>
             </header>
 
